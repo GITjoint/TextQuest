@@ -1,27 +1,13 @@
 'use strict';
 
-const readline = require('readline');
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  prompt: true,
-});
-
-const printOptions = options => {
-  for (const key in options) {
-    console.log(`${key}: ${options[key].title}`);
-  }
-}
-
-
-// Data //
+const { write } = require('./io');
 
 const locations = {
   Village: {
+    description: 'The player is tasked with killing an ancient evil that terrorizes one small village.',
     options: [
       {
-        title: 'The player is tasked with killing an ancient evil that terrorizes one small village. Accept the task.',
+        title: 'Accept the task.',
         argument: 'Paper with demons portrait',
         event: takeItem,
       },
@@ -33,9 +19,10 @@ const locations = {
     ],
   },
   Enterence: {
+    description: 'You are in a strange dark and damp place near you chest and door.',
     options: [
       {
-        title: 'You are in a strange dark and damp place near you chest and door. Snoop in an old chest',
+        title: 'Snoop in an old chest',
         argument: 'Silver sword',
         event: takeItem,
       },
@@ -52,9 +39,10 @@ const locations = {
     ],
   },
   Catacombs: {
+    description: 'In the catacombs on the wall, you notice a strange brick, maybe it will open something.',
     options: [
       {
-        title: 'In the catacombs on the wall, you notice a strange brick, maybe it will open something. Examine the suspicious brick in the wall',
+        title: 'Examine the suspicious brick in the wall',
         argument: 'Shield',
         event: takeItem,
       },
@@ -71,9 +59,10 @@ const locations = {
     ],
   },
   Barracks: {
+    description: 'Nobody has been here for a long time, but it’s possible to find something.',
     options: [
       {
-        title: 'Nobody has been here for a long time, but it’s possible to find something. Chek under the bed.',
+        title: 'Chek under the bed.',
         argument: 'Iron chestplate and helmet',
         event: takeItem,
       },
@@ -90,9 +79,10 @@ const locations = {
     ],
   },
   Tomb: {
+    description: 'You entered the tomb of the ancient demon Sindorai and it looks like he is not very pleased with this.',
     options: [
       {
-        title: 'You entered the tomb of the ancient demon Sindorai and it looks like he is not very pleased with this.Kill him.',
+        title: 'Eliminate the demon',
         argument: 'Sindorai\'s tear (Totem of Immortality)',
         event: takeItem,
       },
@@ -109,9 +99,10 @@ const locations = {
     ],
   },
   Woods: {
+    description: 'Outside you were met by the prince of a village nearby, in which Durotan was constantly atrocious. In gratitude, he gives you a residence permit in his village',
     options: [
       {
-        title: 'Outside you were met by the prince of a village nearby, in which Durotan was constantly atrocious. In gratitude, he gives you a residence permit in his village',
+        title: 'Accept his gift',
         argument: 'Residennce permit and key',
         event: takeItem,
       },
@@ -122,40 +113,26 @@ const locations = {
       },
     ],
   },
-}
-
-let currentLocation = locations.Village;
-const inventory = [];
-
-function takeItem (item) {
-  console.log(`${item} picked up!\n`);
-  inventory.push(item);
-  console.log(`Your inventory: `);
-  console.log(inventory);
-  console.log('\n');
-}
-
-function goAhead (where) {
-  console.log(`You are in the ${where}\n`);
-  currentLocation = locations[where];
-}
-
-
-// MAIN //
-
-const recursiveQuestion = (callback) => {
-  printOptions(currentLocation.options);
-  rl.question('Make a choice\n', (answer) => {
-    if (answer === 'exit') return rl.close();
-    callback(answer);
-    recursiveQuestion(callback);
-  });
 };
 
-const whatToDo = num => { // Функция, обрабатывающая опции
-  //console.log("Опция: " + num);
-  const option = currentLocation.options[num];
-  option.event(option.argument);
+const game = {
+  currentLocation: locations.Village,
+  inventory: [],
 };
 
-recursiveQuestion(whatToDo);
+
+function takeItem(item) {
+  write(`${item} picked up!\n`);
+  game.inventory.push(item);
+  write('Your inventory:');
+  write(game.inventory);
+  write('\n');
+}
+
+function goAhead(where) {
+  write(`You are in the ${where}\n`);
+  game.currentLocation = locations[where];
+}
+
+module.exports = game;
+

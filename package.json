@@ -1,0 +1,23 @@
+{
+  "name": "textquest",
+  "version": "1.0.0",
+  "description": "This is flexible mini quest. There is a demo version with only one line, you can change it as you need and make \"tree\" with many branches.",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.2.0"
+  },
+  "scripts": {
+    "test": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GITjoint/TextQuest.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GITjoint/TextQuest/issues"
+  },
+  "homepage": "https://github.com/GITjoint/TextQuest#readme"
+}
