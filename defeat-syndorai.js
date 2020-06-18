@@ -1,6 +1,6 @@
 'use strict';
 
-const { write } = require('./io');
+const { print } = require('./io');
 
 const locations = {
   Village: {
@@ -79,7 +79,7 @@ const locations = {
     ],
   },
   Tomb: {
-    description: 'You entered the tomb of the ancient demon Sindorai and it looks like he is not very pleased with this.',
+    description: 'You entered the tomb of the ancient demon Syndorai and it looks like he is not very pleased with this.',
     options: [
       {
         title: 'Eliminate the demon',
@@ -107,32 +107,33 @@ const locations = {
         event: takeItem,
       },
       {
-        title: 'Play again',
-        argument: 'Village',
+        title: 'Go back',
+        argument: 'Tomb',
         event: goAhead,
       },
     ],
   },
 };
 
-const game = {
+const gameScript = {
+  title: 'Defeat The Syndorai',
   currentLocation: locations.Village,
   inventory: [],
 };
 
 
 function takeItem(item) {
-  write(`${item} picked up!\n`);
-  game.inventory.push(item);
-  write('Your inventory:');
-  write(game.inventory);
-  write('\n');
+  print(`${item} picked up!\n`);
+  gameScript.inventory.push(item);
+  print('Your inventory:');
+  print(gameScript.inventory);
+  print('\n');
 }
 
 function goAhead(where) {
-  write(`You are in the ${where}\n`);
-  game.currentLocation = locations[where];
+  print(`You are in the ${where}\n`);
+  gameScript.currentLocation = locations[where];
 }
 
-module.exports = game;
+module.exports = gameScript;
 

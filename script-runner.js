@@ -1,7 +1,6 @@
 'use strict';
 
-const game = require('./game-script');
-const { question, write } = require('./io');
+const { question, print } = require('./io');
 const { inRange, isNumeric } = require('./helpers');
 
 const printOptions = options => {
@@ -13,8 +12,8 @@ const printOptions = options => {
 };
 
 const printDescriptions = description => {
-  write('Description');
-  write(description);
+  print('Description');
+  print(description);
 };
 
 const isValidOptionNumber = (optionNumber, numberOfAnswers) =>
@@ -25,22 +24,30 @@ const askNumberOfAnswer = async numberOfAnswers => {
   if (isValidOptionNumber(answer, numberOfAnswers)) {
     return answer - 1;
   }
-  write('Wrong answer!!!');
-  return await askNumberOfAnswer();
+  print('Wrong answer!!!');
+  return await askNumberOfAnswer(numberOfAnswers);
 };
 
-const whatToDo = num => {
-  const option = game.currentLocation.options[num];
+const startEvent = (numberOfAnswer, gameScript) => {
+  const option = gameScript.currentLocation.options[numberOfAnswer];
   option.event(option.argument);
 };
 
-const recursiveQuestion = async () => {
+
+const recursiveQuestion = async game => {
   const options = game.currentLocation.options;
   printDescriptions(game.currentLocation.description);
   printOptions(options);
   const answer = await askNumberOfAnswer(options.length);
-  whatToDo(answer);
-  await recursiveQuestion();
+  startEvent(answer, game);
+  await recursiveQuestion(game);
 };
 
-recursiveQuestion(whatToDo);
+const printTitle = title => print(`SCRIPT TITLE: ${title}`);
+
+const startGameScript = async gameScript => {
+  printTitle(gameScript.title);
+  await recursiveQuestion(gameScript);
+};
+
+module.exports = startGameScript;
